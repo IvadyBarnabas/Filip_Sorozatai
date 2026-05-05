@@ -24,24 +24,6 @@
 
 </header>
 
-<!-- LOGIN MODAL -->
-<div id="authModal" class="modal">
-    <div class="modal-content">
-
-        <h2 id="formTitle">Bejelentkezés</h2>
-
-        <input type="text" id="username" placeholder="Felhasználónév">
-        <input type="password" id="password" placeholder="Jelszó">
-
-        <button onclick="login()">Belépés</button>
-        <button onclick="register()">Regisztráció</button>
-        <button onclick="guestLogin()">Folytatás vendégként</button>
-
-        <p onclick="toggleForm()" id="switchText">Nincs fiókod? Regisztrálj</p>
-
-    </div>
-</div>
-
 <h2 style="text-align:center;">Válassz sorozatot 👇</h2>
 
 <div class="search-container">
@@ -76,6 +58,7 @@ const movies = [
     {id:"dragonrising", title:"Lego Ninjago: Dragon Rising", img:"kepek/dragonrising.webp", info:"Kaland/Gyerek • 2023"},
     {id:"spectaculerspiderman", title:"The Spectacular Spider-man", img:"kepek/spectaculerspiderman.webp", info:"Akció/Kaland • 2008"},
     {id:"ben10omni", title:"Ben 10: Omniverse", img:"kepek/ben10omni.webp", info:"Akció/Kaland • 2012"},
+    {id:"korra", title:"The Legend of Korra", img:"kepek/korra.webp", info:"Akció/Kaland • 2012"},
     {id:"thebatman2004", title:"The Batman", img:"kepek/thebatman2004.webp", info:"Akció/Kaland • 2004"},
     {id:"batmanbeyond", title:"Batman Beyond", img:"kepek/batmanbeyond.webp", info:"Akció/Kaland • 1999"},
     {id:"prime", title:"Transformers Prime", img:"kepek/prime.webp", info:"Akció/Sci-fi • 2010"},
@@ -223,81 +206,6 @@ function prevPage(){
 }
 
 renderMovies();
-// USER
-function renderUser(){
-    const user = localStorage.getItem("loggedUser");
-    const box = document.getElementById("userBox");
-
-    if(!user){ box.innerHTML=""; return; }
-
-    let name = user === "guest" ? "Vendég" : user;
-
-    box.innerHTML = `
-        <span>👤 ${name}</span>
-        <button onclick="logout()">Kilépés</button>
-    `;
-}
-
-function logout(){
-    localStorage.removeItem("loggedUser");
-    location.reload();
-}
-
-// LOGIN SYSTEM
-window.onload = function(){
-    const user = localStorage.getItem("loggedUser");
-    if(user){
-        document.getElementById("authModal").style.display="none";
-    }
-    renderUser();
-    renderMovies();
-}
-
-function login(){
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
-
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    let found = users.find(u => u.username === username && u.password === password);
-
-    if(found){
-        localStorage.setItem("loggedUser", username);
-        document.getElementById("authModal").style.display="none";
-        renderUser();
-    } else {
-        alert("Hibás adatok!");
-    }
-}
-
-function register(){
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
-
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    if(users.find(u => u.username === username)){
-        alert("Ez a név már foglalt!");
-        return;
-    }
-
-    users.push({username,password});
-    localStorage.setItem("users", JSON.stringify(users));
-    alert("Sikeres regisztráció!");
-}
-
-function guestLogin(){
-    localStorage.setItem("loggedUser","guest");
-    document.getElementById("authModal").style.display="none";
-    renderUser();
-}
-
-let isLogin = true;
-function toggleForm(){
-    isLogin = !isLogin;
-    document.getElementById("formTitle").innerText = isLogin ? "Bejelentkezés" : "Regisztráció";
-    document.getElementById("switchText").innerText = isLogin ? "Nincs fiókod? Regisztrálj" : "Van fiókod? Jelentkezz be";
-}
 
 // HEADER RANDOM
 const kepek = [
